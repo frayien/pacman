@@ -7,10 +7,11 @@ package view;
 
 import java.util.Observable;
 import java.util.Observer;
-import javafx.scene.image.Image;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -35,8 +36,8 @@ public class SimpleVC extends Application {
         GridPane grid = new GridPane(); // création de la grille 
         
         // Pacman.svg.png
-        Image imPM = new Image("ressources/Pacman.png"); // préparation des images
-        Image imVide = new Image("ressources/Vide.png");
+        Image imPM = new Image("file:ressources/Pacman.png"); // préparation des images
+        Image imVide = new Image("file:ressources/Vide.png");
         
         
         //img.setScaleY(0.01);
