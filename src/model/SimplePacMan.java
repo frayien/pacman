@@ -17,9 +17,11 @@ import java.util.logging.Logger;
  */
 public class SimplePacMan extends Observable implements Runnable {
 
-    int x, y, sizeX, sizeY;
+    private int x, y, sizeX, sizeY;
     
-    Random r = new Random();
+    private Direction direction = Direction.NONE;
+    
+    private static Random RANDOM_GENERATOR = new Random();
     
     
     public SimplePacMan(int _sizeX, int _sizeY) {
@@ -39,7 +41,9 @@ public class SimplePacMan extends Observable implements Runnable {
     }
     
     public void start() {
-        new Thread(this).start();
+        Thread th = new Thread(this);
+        th.setDaemon(true);
+        th.start();
     }
     
     public void initXY() {
@@ -47,22 +51,28 @@ public class SimplePacMan extends Observable implements Runnable {
         y = 0;
     }
     
+    public void setDirection(Direction _dir) {
+    	direction = _dir;
+    }
+    
     @Override
     public void run() {
-        while(true) { // spm descent dasn la grille à chaque pas de temps
+        while(true) { // spm descent dans la grille à chaque pas de temps
             
-           int deltaX = r.nextInt(2);
-           
-           if (x + deltaX > 0 && x + deltaX < sizeX) {
-               x += deltaX;
-           }
-           
-           int deltaY = r.nextInt(2);
-           if (y + deltaY > 0 && y + deltaY < sizeX) {
-               y += deltaY;
-           } 
-           
-           //System.out.println(x + " - " + y);
+        	switch(direction) {
+        	case UP:
+        		y = (y-1+sizeY)%sizeY;
+        		break;
+        	case DOWN:
+        		y = (y+1)%sizeY;
+        		break;
+        	case LEFT:
+        		x = (x-1+sizeX)%sizeX;
+        		break;
+        	case RIGHT:
+        		x = (x+1)%sizeX;
+        		break;
+        	}
            
            setChanged(); 
            notifyObservers(); // notification de l'observer

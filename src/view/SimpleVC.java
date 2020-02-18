@@ -13,9 +13,12 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import model.Direction;
 import model.SimplePacMan;
 
 /**
@@ -24,7 +27,7 @@ import model.SimplePacMan;
  */
 public class SimpleVC extends Application {
     
-    public final int SIZE_X =10;
+    public final int SIZE_X = 10;
     public final int SIZE_Y = 10;
     
     @Override
@@ -87,13 +90,24 @@ public class SimpleVC extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        root.setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() { // on écoute le clavier
-            
-
+        root.setOnKeyPressed(new EventHandler<KeyEvent>() { // on écoute le clavier
             @Override
-            public void handle(javafx.scene.input.KeyEvent event) {
-                if (event.isShiftDown()) {
-                    spm.initXY(); // si on clique sur shift, on remet spm en haut à gauche
+            public void handle(KeyEvent event) {
+            	switch(event.getCode()) {
+            	case UP:
+                	spm.setDirection(Direction.UP);
+                	break;
+            	case DOWN:
+                	spm.setDirection(Direction.DOWN);
+                	break;
+            	case LEFT:
+                	spm.setDirection(Direction.LEFT);
+                	break;
+            	case RIGHT:
+                	spm.setDirection(Direction.RIGHT);
+                	break;
+            	default:
+            		break;
                 }
             }
         });
