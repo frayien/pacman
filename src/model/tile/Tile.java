@@ -1,5 +1,14 @@
 package model.tile;
 
-public abstract class Tile {
+import model.tileentity.TileEntity;
+
+public abstract class Tile 
+{
+	private TileEntity tileEntity = null;
+
+	public void setTileEntity(TileEntity te)
+	{
+		tileEntity = te;
+	}
 
 }
