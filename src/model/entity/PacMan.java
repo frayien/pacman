@@ -1,7 +1,6 @@
 package model.entity;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Point;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
@@ -10,25 +9,29 @@ import model.Grid;
 
 public class PacMan extends Entity implements EventHandler<KeyEvent>
 {
+	private Direction nextDir = Direction.NONE;
+	
 	public PacMan(Grid g) {
 		super(g);
+		setSpeed(4);
 	}
 
 	@Override
 	public void handle(KeyEvent event) {
+		
 		switch(event.getCode()) 
 		{
     	case UP:
-        	this.setDirection(Direction.UP);
+        	nextDir = Direction.UP;
         	break;
     	case DOWN:
-        	this.setDirection(Direction.DOWN);
+    		nextDir = Direction.DOWN;
         	break;
     	case LEFT:
-        	this.setDirection(Direction.LEFT);
+    		nextDir = Direction.LEFT;
         	break;
     	case RIGHT:
-        	this.setDirection(Direction.RIGHT);
+    		nextDir = Direction.RIGHT;
         	break;
     	default:
     		break;
@@ -37,16 +40,16 @@ public class PacMan extends Entity implements EventHandler<KeyEvent>
 	}
 
 	@Override
-	public void run() 
+	public void update() 
 	{
-        while(true) {
-            
-        	getGrid().move(getDirection(), this);
-           
-            try {
-                Thread.sleep(1000); // pause
-            } catch (InterruptedException ex) { }
-           
-        }
+        if(nextDir != Direction.NONE && nextDir != getDirection())
+        {
+        	Point p = getGrid().getPosition(this);
+        	if(getGrid().isPath(p.x,p.y,nextDir)) 
+        	{
+        		setDirection(nextDir);
+        		nextDir = Direction.NONE;
+        	}
+    	}
 	}
 }

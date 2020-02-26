@@ -88,23 +88,31 @@ public class Grid extends Observable
 	public void move(Direction dir, Entity e)
 	{
 		Point p = entityMap.get(e);
+		Point pp = (Point) p.clone();
 		switch(dir) 
 		{
     	case UP:
-    		p.y = (p.y-1+height)%height;
+    		p.x = (p.x-1+height)%height;
     		break;
     	case DOWN:
-    		p.y = (p.y+1)%height;
+    		p.x = (p.x+1)%height;
     		break;
     	case LEFT:
-    		p.x = (p.x-1+width)%width;
+    		p.y = (p.y-1+width)%width;
     		break;
     	case RIGHT:
-    		p.x = (p.x+1)%width;
+    		p.y = (p.y+1)%width;
     		break;
+		}
+		if(isWall(p.x, p.y))
+		{
+			p.x = pp.x;
+			p.y = pp.y;
 		}
 		setChanged(); 
 		notifyObservers(p);
+		setChanged();
+		notifyObservers(pp);
 	}
 	
 	private Tile getTile(int h, int w)
@@ -122,9 +130,48 @@ public class Grid extends Observable
 		return getTile(h, w) instanceof Path;
 	}
 	
+	public boolean isWall(int h, int w, Direction dir)
+	{
+		switch(dir)
+		{
+		case UP:
+			return isWall(h-1,w);
+		case DOWN:
+			return isWall(h+1,w);
+		case LEFT:
+			return isWall(h,w-1);
+		case RIGHT:
+			return isWall(h,w+1);
+		default:
+			return isWall(h,w);
+		}
+	}
+	
+	public boolean isPath(int h, int w, Direction dir)
+	{
+		switch(dir)
+		{
+		case UP:
+			return isPath(h-1,w);
+		case DOWN:
+			return isPath(h+1,w);
+		case LEFT:
+			return isPath(h,w-1);
+		case RIGHT:
+			return isPath(h,w+1);
+		default:
+			return isPath(h,w);
+		}
+	}
+	
 	public boolean hasEntity(int h, int w)
 	{
 		return entityMap.containsValue(new Point(h,w));
+	}
+	
+	public Point getPosition(Entity e)
+	{
+		return entityMap.get(e);
 	}
 	
 	public PacMan getPlayer()

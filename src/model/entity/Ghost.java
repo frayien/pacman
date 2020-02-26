@@ -9,7 +9,7 @@ public class Ghost extends Entity {
 	}
 
 	@Override
-	public void run() {
+	public void update() {
 		// TODO Auto-generated method stub
 		
 	}

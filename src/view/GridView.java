@@ -28,7 +28,7 @@ public class GridView extends GridPane
 			for(int w = 0; w<grid.getWidth(); w++)
 			{
 				TileView tv = new TileView(h,w);
-				tv.setImage(grid.hasEntity(h, w) ? ENTITYMAP : WORLDMAP);
+				tv.setImage(grid.isPath(h, w) ? ENTITYMAP : WORLDMAP);
 				grid.addObserver(tv);
 				tv.update(grid, new Point(h,w));
 				this.add(tv, w, h);

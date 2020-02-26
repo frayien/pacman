@@ -5,11 +5,17 @@ import model.Grid;
 
 public abstract class Entity implements Runnable
 {
+	private Thread thread;
 	private Grid grid;
-	public Entity(Grid g) {grid = g;}
+	private float speed = 1;
 	private Direction direction = Direction.NONE;
 	
-	private Thread thread;
+	private int frame = 0;
+	
+	public Entity(Grid g) 
+	{ 
+		grid = g; 
+	}
 	
 	public void start() 
 	{
@@ -17,6 +23,31 @@ public abstract class Entity implements Runnable
         thread.setDaemon(true);
         thread.start();
     }
+	
+	@Override
+	public void run()
+	{
+		while(true)
+		{
+			frame++;
+			frame %= 2;
+			update();
+			getGrid().move(getDirection(), this);
+			try { Thread.sleep((long)(1000.0f/speed)); } catch (InterruptedException ex) { }
+		}
+	}
+	
+	public abstract void update();
+	
+	public void setSpeed(float s)
+	{
+		speed = s;
+	}
+	
+	public int getFrame()
+	{
+		return frame;
+	}
 	
 	public Direction getDirection()
 	{
