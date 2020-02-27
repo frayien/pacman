@@ -1,10 +1,16 @@
 package controller;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Grid;
+import model.entity.PacMan;
 import view.GridView;
 
 public class PacManApplication extends Application
@@ -16,13 +22,13 @@ public class PacManApplication extends Application
 	@Override
 	public void start(Stage stage) 
 	{
+		root = new StackPane();
+		root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+		PacMan.setRoot(root);
 		grid = new Grid();
 		gridView = new GridView(grid);
-		root = new StackPane();
+		
         root.getChildren().add(gridView);
-        
-        root.setOnKeyPressed(grid.getPlayer());
-        grid.getPlayer().start();
         
         Scene scene = new Scene(root, 700, 620);
         stage.setTitle("Pac Man");

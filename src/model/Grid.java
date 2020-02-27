@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Observable;
 
 import model.entity.Entity;
@@ -27,8 +28,6 @@ public class Grid extends Observable
 	
 	private Tile tileMap[];
 	private Map<Entity, Point> entityMap = new HashMap<>();
-	
-	private PacMan player = new PacMan(this);
 	
 	public Grid() 
 	{
@@ -70,11 +69,12 @@ public class Grid extends Observable
                 	}
                 	if(linesplit[j].contains("f"))
                 	{
-                		entityMap.put(new Ghost(this), new Point(i,j));
+                		int gid = Integer.parseInt("" + linesplit[j].charAt(linesplit[j].length() -1));
+                		entityMap.put(new Ghost(this,gid), new Point(i,j));
                 	}
                 	if(linesplit[j].contains("m"))
                 	{
-                		entityMap.put(player, new Point(i,j));
+                		entityMap.put(new PacMan(this), new Point(i,j));
                 	}
                 }
 
@@ -83,6 +83,8 @@ public class Grid extends Observable
         } 
         catch (FileNotFoundException e) { e.printStackTrace(); } catch (IOException e) { e.printStackTrace(); } 
         finally { try { br.close(); } catch (IOException e) { } catch (NullPointerException e) { } }
+        
+        for(Entity e : entityMap.keySet()) e.start();
 	}
 	
 	public void move(Direction dir, Entity e)
@@ -109,10 +111,13 @@ public class Grid extends Observable
 			p.x = pp.x;
 			p.y = pp.y;
 		}
-		setChanged(); 
-		notifyObservers(p);
-		setChanged();
-		notifyObservers(pp);
+		synchronized (this) 
+		{
+			setChanged(); 
+			notifyObservers(p);
+			setChanged();
+			notifyObservers(pp);
+		}
 	}
 	
 	private Tile getTile(int h, int w)
@@ -169,14 +174,23 @@ public class Grid extends Observable
 		return entityMap.containsValue(new Point(h,w));
 	}
 	
+	public Entity getEntity(Point p)
+	{
+		for(Entry<Entity,Point> e : entityMap.entrySet())
+		{
+			if(e.getValue().equals(p)) return e.getKey();
+		}
+		return null;
+	}
+	
+	public Entity getEntity(int h, int w)
+	{
+		return getEntity(new Point(h,w));
+	}
+	
 	public Point getPosition(Entity e)
 	{
 		return entityMap.get(e);
-	}
-	
-	public PacMan getPlayer()
-	{
-		return player;
 	}
 	
 	public int getHeight() { return height; }

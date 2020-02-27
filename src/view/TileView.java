@@ -5,10 +5,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import model.Direction;
 import model.Grid;
+import model.entity.Entity;
+import model.entity.Ghost;
+import model.entity.PacMan;
 
 public class TileView extends ImageView implements Observer
 {
@@ -108,26 +109,53 @@ public class TileView extends ImageView implements Observer
 			
 			this.setViewport(viewports[id]);
 		}
-		else if(g.hasEntity(height, width))
+		else
 		{
-			this.setVisible(true);
-			switch(g.getPlayer().getDirection())
+			Entity entity = g.getEntity(height, width);
+			if(entity != null)
 			{
-			case UP:
-				this.setViewport(new Rectangle2D((g.getPlayer().getFrame() + 10)*32, 3*32,32,32));
-				break;
-			case DOWN:
-				this.setViewport(new Rectangle2D((g.getPlayer().getFrame() + 10)*32, 1*32,32,32));
-				break;
-			case LEFT:
-				this.setViewport(new Rectangle2D((g.getPlayer().getFrame() + 10)*32, 2*32,32,32));
-				break;
-			default:
-				this.setViewport(new Rectangle2D((g.getPlayer().getFrame() + 10)*32, 0*32,32,32));
-				break;
+				if(entity instanceof PacMan)
+				{
+					this.setVisible(true);
+					switch(entity.getDirection())
+					{
+					case UP:
+						this.setViewport(new Rectangle2D((entity.getFrame() + 10)*32, 3*32,32,32));
+						break;
+					case DOWN:
+						this.setViewport(new Rectangle2D((entity.getFrame() + 10)*32, 1*32,32,32));
+						break;
+					case LEFT:
+						this.setViewport(new Rectangle2D((entity.getFrame() + 10)*32, 2*32,32,32));
+						break;
+					default:
+						this.setViewport(new Rectangle2D((entity.getFrame() + 10)*32, 0*32,32,32));
+						break;
+					}
+				}
+				else // instanceof Ghost
+				{
+					Ghost gh = (Ghost) entity;
+					this.setVisible(true);
+					switch(entity.getDirection())
+					{
+					case UP:
+						this.setViewport(new Rectangle2D((gh.getFrame() + gh.getId()*2)*32, 3*32,32,32));
+						break;
+					case DOWN:
+						this.setViewport(new Rectangle2D((gh.getFrame() + gh.getId()*2)*32, 1*32,32,32));
+						break;
+					case LEFT:
+						this.setViewport(new Rectangle2D((gh.getFrame() + gh.getId()*2)*32, 2*32,32,32));
+						break;
+					default:
+						this.setViewport(new Rectangle2D((gh.getFrame() + gh.getId()*2)*32, 0*32,32,32));
+						break;
+					}
+				}
 			}
+			else this.setVisible(false);
 		}
-		else this.setVisible(false);
 		
     }
 }

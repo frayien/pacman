@@ -4,6 +4,8 @@ import java.awt.Point;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import model.Direction;
 import model.Grid;
 
@@ -11,9 +13,12 @@ public class PacMan extends Entity implements EventHandler<KeyEvent>
 {
 	private Direction nextDir = Direction.NONE;
 	
+	private static Pane root;
+	
 	public PacMan(Grid g) {
 		super(g);
 		setSpeed(4);
+		root.setOnKeyPressed(this);
 	}
 
 	@Override
@@ -51,5 +56,10 @@ public class PacMan extends Entity implements EventHandler<KeyEvent>
         		nextDir = Direction.NONE;
         	}
     	}
+	}
+
+	public static void setRoot(Pane p) {
+		root = p;
+		
 	}
 }
