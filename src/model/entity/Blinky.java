@@ -15,11 +15,12 @@ import model.Grid;
  */
 public class Blinky extends Ghost {
 
-    Point defaultTarget = new Point(0, 17);
+    Point defaultTarget = new Point(0, 19);
     Point currentTarget;
 
     public Blinky(Grid g) {
         super(g, 0);
+        setSpeed(4);
     }
 
     @Override
@@ -31,7 +32,6 @@ public class Blinky extends Ghost {
         } //Else Scatter
         else {
             
-        System.out.println("Blinky update");
             Point upTile,leftTile,downTile,rightTile;
             upTile = new Point(p.x - 1,p.y);
             leftTile = new Point(p.x,p.y - 1);
