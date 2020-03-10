@@ -8,7 +8,8 @@ public abstract class Entity implements Runnable
 	private Thread thread;
 	private Grid grid;
 	private float speed = 1;
-	private Direction direction = Direction.NONE;
+	protected Direction direction = Direction.NONE;
+        protected static int frameCount;
 	
 	private int frame = 0;
 	

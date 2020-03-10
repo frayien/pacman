@@ -5,6 +5,7 @@
  */
 package model.entity;
 
+import java.awt.Point;
 import model.Grid;
 
 /**
@@ -12,6 +13,9 @@ import model.Grid;
  * @author CoolPC
  */
 public class Clyde extends Ghost {
+    
+    Point defaultTarget;
+    Point currentTarget;
     
     public Clyde(Grid g) {
         super(g, 1);

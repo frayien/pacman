@@ -52,6 +52,7 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
                 nextDir = Direction.NONE;
             }
         }
+        Entity.frameCount = (Entity.frameCount + 1) % 100;
     }
 
     public static void setRoot(Pane p) {
