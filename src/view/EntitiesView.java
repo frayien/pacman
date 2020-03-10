@@ -1,11 +1,11 @@
 package view;
 
-import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import model.Grid;
 import model.entity.Entity;
 
-public class EntitiesView extends Group
+public class EntitiesView extends Pane
 {
 	private Grid grid;
 	

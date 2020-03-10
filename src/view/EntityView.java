@@ -24,12 +24,11 @@ public class EntityView extends ImageView implements Observer
 		Entity entity = (Entity) o;
 		Grid grid = (Grid) arg;
 		Point p = grid.getPosition(entity);
-		this.setY(p.getX());
-		this.setX(p.getY());
+		this.setTranslateX(32*p.y);
+		this.setTranslateY(32*p.x);
 		
 		if(entity instanceof PacMan)
 		{
-			this.setVisible(true);
 			switch(entity.getDirection())
 			{
 			case UP:
@@ -49,7 +48,6 @@ public class EntityView extends ImageView implements Observer
 		else // instanceof Ghost
 		{
 			Ghost gh = (Ghost) entity;
-			this.setVisible(true);
 			switch(entity.getDirection())
 			{
 			case UP:
