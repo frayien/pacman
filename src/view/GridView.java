@@ -10,7 +10,6 @@ public class GridView extends GridPane
 {
 	private Grid grid;
 	
-	private static final Image ENTITYMAP = new Image("file:ressources/pacmanMap.png");
 	private static final Image WORLDMAP = new Image("file:ressources/worldMap.png");
 	
 	public GridView(Grid g)
@@ -28,7 +27,7 @@ public class GridView extends GridPane
 			for(int w = 0; w<grid.getWidth(); w++)
 			{
 				TileView tv = new TileView(h,w);
-				tv.setImage(grid.isPath(h, w) ? ENTITYMAP : WORLDMAP);
+				tv.setImage(WORLDMAP);
 				grid.addObserver(tv);
 				tv.update(grid, new Point(h,w));
 				this.add(tv, w, h);

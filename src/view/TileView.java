@@ -109,53 +109,6 @@ public class TileView extends ImageView implements Observer
 			
 			this.setViewport(viewports[id]);
 		}
-		else
-		{
-			Entity entity = g.getEntity(height, width);
-			if(entity != null)
-			{
-				if(entity instanceof PacMan)
-				{
-					this.setVisible(true);
-					switch(entity.getDirection())
-					{
-					case UP:
-						this.setViewport(new Rectangle2D((entity.getFrame() + 10)*32, 3*32,32,32));
-						break;
-					case DOWN:
-						this.setViewport(new Rectangle2D((entity.getFrame() + 10)*32, 1*32,32,32));
-						break;
-					case LEFT:
-						this.setViewport(new Rectangle2D((entity.getFrame() + 10)*32, 2*32,32,32));
-						break;
-					default:
-						this.setViewport(new Rectangle2D((entity.getFrame() + 10)*32, 0*32,32,32));
-						break;
-					}
-				}
-				else // instanceof Ghost
-				{
-					Ghost gh = (Ghost) entity;
-					this.setVisible(true);
-					switch(entity.getDirection())
-					{
-					case UP:
-						this.setViewport(new Rectangle2D((gh.getFrame() + gh.getId()*2)*32, 3*32,32,32));
-						break;
-					case DOWN:
-						this.setViewport(new Rectangle2D((gh.getFrame() + gh.getId()*2)*32, 1*32,32,32));
-						break;
-					case LEFT:
-						this.setViewport(new Rectangle2D((gh.getFrame() + gh.getId()*2)*32, 2*32,32,32));
-						break;
-					default:
-						this.setViewport(new Rectangle2D((gh.getFrame() + gh.getId()*2)*32, 0*32,32,32));
-						break;
-					}
-				}
-			}
-			else this.setVisible(false);
-		}
-		
+		else setVisible(false);
     }
 }

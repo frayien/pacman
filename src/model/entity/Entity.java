@@ -1,9 +1,11 @@
 package model.entity;
 
+import java.util.Observable;
+
 import model.Direction;
 import model.Grid;
 
-public abstract class Entity implements Runnable
+public abstract class Entity extends Observable implements Runnable
 {
 	private Thread thread;
 	private Grid grid;
@@ -60,4 +62,10 @@ public abstract class Entity implements Runnable
 	}
 	
 	public Grid getGrid() { return grid; }
+	
+	public synchronized void refresh()
+	{
+		setChanged();
+		notifyObservers(grid);
+	}
 }
