@@ -207,6 +207,10 @@ public class Grid extends Observable {
         Point positionPac = getPosition(player);
         return Math.abs(p.x - positionPac.x) + Math.abs(p.y - positionPac.y);
     }
+    
+    public int getDistanceFromPoint(Point p1,Point p2) {
+        return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
+    }
 
     public int getHeight() {
         return height;
