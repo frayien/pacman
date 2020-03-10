@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Observable;
+import java.util.Set;
 
 import model.entity.Entity;
 import model.entity.Ghost;
@@ -111,13 +112,7 @@ public class Grid extends Observable
 			p.x = pp.x;
 			p.y = pp.y;
 		}
-		synchronized (this) 
-		{
-			setChanged(); 
-			notifyObservers(p);
-			setChanged();
-			notifyObservers(pp);
-		}
+		e.refresh();
 	}
 	
 	private Tile getTile(int h, int w)
@@ -188,6 +183,11 @@ public class Grid extends Observable
 		return getEntity(new Point(h,w));
 	}
 	
+	public Set<Entity> getEntities()
+	{
+		return entityMap.keySet();
+	}
+	
 	public Point getPosition(Entity e)
 	{
 		return entityMap.get(e);
@@ -195,5 +195,7 @@ public class Grid extends Observable
 	
 	public int getHeight() { return height; }
 	public int getWidth() { return width; }
+
+	
 	
 }
