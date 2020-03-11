@@ -5,9 +5,9 @@
  */
 package model.entity;
 
-import java.awt.Point;
 import model.Direction;
 import model.Grid;
+import utils.Vector2i;
 
 /**
  *
@@ -15,8 +15,8 @@ import model.Grid;
  */
 public class Pinky extends Ghost {
 
-    Point defaultTarget = new Point(3, 0);
-    Point currentTarget;
+    Vector2i defaultTarget = new Vector2i(3, 0);
+    Vector2i currentTarget;
     
     public Pinky(Grid g) {
         super(g, 2);
@@ -25,26 +25,26 @@ public class Pinky extends Ghost {
     
     @Override
     public void update() {
-        Point p = getGrid().getPosition(this);
+    	Vector2i p = getGrid().getPosition(this).toVector2i();
         int distUp, distLeft, distDown, distRight;
         //If Chase
         if (false) {
         } //Else Scatter
         else {
             
-            Point upTile,leftTile,downTile,rightTile;
-            upTile = new Point(p.x - 1,p.y);
-            leftTile = new Point(p.x,p.y - 1);
-            downTile = new Point(p.x + 1,p.y);
-            rightTile = new Point(p.x,p.y + 1);
+        	Vector2i upTile,leftTile,downTile,rightTile;
+            upTile = new Vector2i(p.x - 1,p.y);
+            leftTile = new Vector2i(p.x,p.y - 1);
+            downTile = new Vector2i(p.x + 1,p.y);
+            rightTile = new Vector2i(p.x,p.y + 1);
             //UP
-            distUp = getGrid().getDistanceFromPoint(defaultTarget, upTile);
+            distUp = defaultTarget.distanceTo(upTile);
             //LEFT
-            distLeft = getGrid().getDistanceFromPoint(defaultTarget, leftTile);
+            distLeft = defaultTarget.distanceTo(leftTile);
             //DOWN
-            distDown = getGrid().getDistanceFromPoint(defaultTarget, downTile);
+            distDown = defaultTarget.distanceTo(downTile);
             //RIGHT
-            distRight = getGrid().getDistanceFromPoint(defaultTarget, rightTile);
+            distRight = defaultTarget.distanceTo(rightTile);
             
             if (getGrid().isPath(upTile.x,upTile.y)
                     && (distUp <= distLeft || !getGrid().isPath(leftTile.x,leftTile.y) || this.direction == Direction.RIGHT)

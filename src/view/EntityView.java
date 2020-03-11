@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Point;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -10,6 +9,7 @@ import model.Grid;
 import model.entity.Entity;
 import model.entity.Ghost;
 import model.entity.PacMan;
+import utils.Vector2f;
 
 public class EntityView extends ImageView implements Observer
 {
@@ -23,7 +23,7 @@ public class EntityView extends ImageView implements Observer
 	public void update(Observable o, Object arg) {
 		Entity entity = (Entity) o;
 		Grid grid = (Grid) arg;
-		Point p = grid.getPosition(entity);
+		Vector2f p = grid.getPosition(entity);
 		this.setTranslateX(32*p.y);
 		this.setTranslateY(32*p.x);
 		

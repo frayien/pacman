@@ -1,13 +1,11 @@
 package model.entity;
 
-import java.awt.Point;
-
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import model.Direction;
 import model.Grid;
+import utils.Vector2f;
 
 public class PacMan extends Entity implements EventHandler<KeyEvent> {
 
@@ -46,8 +44,8 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
     @Override
     public void update() {
         if (nextDir != Direction.NONE && nextDir != getDirection()) {
-            Point p = getGrid().getPosition(this);
-            if (getGrid().isPath(p.x, p.y, nextDir)) {
+        	Vector2f p = getGrid().getPosition(this);
+            if (getGrid().isPath((int)p.x,(int) p.y, nextDir)) {
                 setDirection(nextDir);
                 nextDir = Direction.NONE;
             }

@@ -24,6 +24,7 @@ import model.tile.Path;
 import model.tile.Tile;
 import model.tile.Wall;
 import model.tileentity.PacGum;
+import utils.Vector2f;
 
 public class Grid extends Observable {
 
@@ -33,7 +34,7 @@ public class Grid extends Observable {
     private int height = 10;
 
     private Tile tileMap[];
-    private Map<Entity, Point> entityMap = new HashMap<>();
+    private Map<Entity, Vector2f> entityMap = new HashMap<>();
 
     public Grid() {
         buildGridFromFile(MAP_PATH);
@@ -69,19 +70,19 @@ public class Grid extends Observable {
                         switch (gid) {
                             case 1:
                                 //Clyde
-                                entityMap.put(new Clyde(this), new Point(i, j));
+                                entityMap.put(new Clyde(this), new Vector2f(i, j));
                                 break;
                             case 2:
                                 //Pinky
-                                entityMap.put(new Pinky(this), new Point(i, j));
+                                entityMap.put(new Pinky(this), new Vector2f(i, j));
                                 break;
                             case 3:
-                                entityMap.put(new Inky(this), new Point(i, j));
+                                entityMap.put(new Inky(this), new Vector2f(i, j));
                                 break;
                             default:
                             case 0:
                                 //Blinky
-                                entityMap.put(new Blinky(this), new Point(i, j));
+                                entityMap.put(new Blinky(this), new Vector2f(i, j));
                                 break;
 
                         }
@@ -89,7 +90,7 @@ public class Grid extends Observable {
                     }
                     if (linesplit[j].contains("m")) {
                         player = new PacMan(this);
-                        entityMap.put(player, new Point(i, j));
+                        entityMap.put(player, new Vector2f(i, j));
                     }
                 }
 
@@ -103,8 +104,8 @@ public class Grid extends Observable {
 	
 	public void move(Direction dir, Entity e)
 	{
-		Point p = entityMap.get(e);
-		Point pp = (Point) p.clone();
+		Vector2f p = entityMap.get(e);
+		Vector2f pp = p.clone();
 		switch(dir) 
 		{
     	case UP:
@@ -120,7 +121,7 @@ public class Grid extends Observable {
     		p.y = (p.y+1)%width;
     		break;
 		}
-		if(isWall(p.x, p.y))
+		if(isWall((int)p.x,(int) p.y))
 		{
 			p.x = pp.x;
 			p.y = pp.y;
@@ -182,18 +183,18 @@ public class Grid extends Observable {
 		return entityMap.containsValue(new Point(h,w));
 	}
 	
-	public Entity getEntity(Point p)
+	public Entity getEntity(Vector2f p)
 	{
-		for(Entry<Entity,Point> e : entityMap.entrySet())
+		for(Entry<Entity,Vector2f> e : entityMap.entrySet())
 		{
 			if(e.getValue().equals(p)) return e.getKey();
 		}
 		return null;
 	}
 	
-	public Entity getEntity(int h, int w)
+	public Entity getEntity(float h, float w)
 	{
-		return getEntity(new Point(h,w));
+		return getEntity(new Vector2f(h,w));
 	}
 	
 	public Set<Entity> getEntities()
@@ -201,20 +202,14 @@ public class Grid extends Observable {
 		return entityMap.keySet();
 	}
 	
-	public Point getPosition(Entity e)
+	public Vector2f getPosition(Entity e)
 	{
 		return entityMap.get(e);
 	}
 	
-    public int getDistanceFromPacMan(Point p) 
+    public Vector2f getPacManPosition() 
     {
-        Point positionPac = getPosition(player);
-        return Math.abs(p.x - positionPac.x) + Math.abs(p.y - positionPac.y);
-    }
-    
-    public int getDistanceFromPoint(Point p1,Point p2) 
-    {
-        return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
+        return getPosition(player);
     }
 	
 	public int getHeight() { return height; }
