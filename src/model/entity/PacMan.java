@@ -45,7 +45,7 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
     public void update() {
         if (nextDir != Direction.NONE && nextDir != getDirection()) {
         	Vector2f p = getGrid().getPosition(this);
-            if (getGrid().isPath((int)p.x,(int) p.y, nextDir)) {
+            if (getGrid().isPath(p.toVector2i(), nextDir)) {
                 setDirection(nextDir);
                 nextDir = Direction.NONE;
             }

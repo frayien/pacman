@@ -69,7 +69,7 @@ public class Vector2f implements Cloneable
 	
 	public Vector2i toVector2i()
 	{
-		return new Vector2i((int) x, (int) y);
+		return new Vector2i((int) (x + 0.5), (int) (y + 0.5));
 	}
 	
 	@Override

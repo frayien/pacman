@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +24,9 @@ import model.tile.Tile;
 import model.tile.Wall;
 import model.tileentity.PacGum;
 import utils.Vector2f;
+import utils.Vector2i;
 
+@SuppressWarnings("deprecation")
 public class Grid extends Observable {
 
     private static final String MAP_PATH = "ressources/map.txt";
@@ -58,12 +59,12 @@ public class Grid extends Observable {
                 String[] linesplit = line.split(" ");
                 for (int j = 0; j < width; j++) {
                     if (linesplit[j].contains("w")) {
-                        tileMap[i * height + j] = new Wall();
+                        tileMap[i * width + j] = new Wall();
                     } else {
-                        tileMap[i * height + j] = new Path();
+                        tileMap[i * width + j] = new Path();
                     }
                     if (linesplit[j].contains("g")) {
-                        tileMap[i * height + j].setTileEntity(new PacGum());
+                        tileMap[i * width + j].setTileEntity(new PacGum());
                     }
                     if (linesplit[j].contains("f")) {
                         int gid = Integer.parseInt("" + linesplit[j].charAt(linesplit[j].length() - 1));
@@ -102,36 +103,49 @@ public class Grid extends Observable {
         for(Entity e : entityMap.keySet()) e.start();
 	}
 	
-	public void move(Direction dir, Entity e)
+	public void move(Direction dir, Entity e, long time)
 	{
 		Vector2f p = entityMap.get(e);
-		Vector2f pp = p.clone();
+		Vector2f mov = new Vector2f(0,0);
 		switch(dir) 
 		{
     	case UP:
-    		p.x = (p.x-1+height)%height;
+    		mov.x = -1;
     		break;
     	case DOWN:
-    		p.x = (p.x+1)%height;
+    		mov.x = 1;
     		break;
     	case LEFT:
-    		p.y = (p.y-1+width)%width;
+    		mov.y = -1;
     		break;
     	case RIGHT:
-    		p.y = (p.y+1)%width;
+    		mov.y = 1;
     		break;
+		default:
+			break;
 		}
-		if(isWall((int)p.x,(int) p.y))
+		if(isWall(p.clone().add(mov).toVector2i()))
 		{
-			p.x = pp.x;
-			p.y = pp.y;
+			mov.x = 0;
+			mov.y = 0;
 		}
-		Platform.runLater(()->e.refresh());
+		long pas = 1000/60;
+		long iter = time/pas;
+		mov.mult(1.f/(float)iter);
+		for(long i = 0; i < iter; i++)
+		{
+			p.add(mov);
+			p.x = (p.x+height+0.5f)%height -0.5f;
+			p.y = (p.y+width+0.5f)%width - 0.5f;
+			Platform.runLater(()->e.refresh());
+			try { Thread.sleep(pas); } catch (InterruptedException e1) { }
+		}
+		
 	}
 	
 	private Tile getTile(int h, int w)
 	{
-		return tileMap[((h%height+height)%height )  *height+((w%width+width)%width)];
+		return tileMap[((h%height+height)%height )  *width+((w%width+width)%width)];
 	}
 	
 	public boolean isWall(int h, int w)
@@ -139,9 +153,19 @@ public class Grid extends Observable {
 		return getTile(h, w) instanceof Wall;
 	}
 	
+	public boolean isWall(Vector2i pos)
+	{
+		return isWall(pos.x,pos.y);
+	}
+	
 	public boolean isPath(int h, int w)
 	{
 		return getTile(h, w) instanceof Path;
+	}
+	
+	public boolean isPath(Vector2i pos)
+	{
+		return isPath(pos.x,pos.y);
 	}
 	
 	public boolean isWall(int h, int w, Direction dir)
@@ -161,6 +185,11 @@ public class Grid extends Observable {
 		}
 	}
 	
+	public boolean isWall(Vector2i pos, Direction dir)
+	{
+		return isWall(pos.x,pos.y,dir);
+	}
+	
 	public boolean isPath(int h, int w, Direction dir)
 	{
 		switch(dir)
@@ -178,9 +207,14 @@ public class Grid extends Observable {
 		}
 	}
 	
+	public boolean isPath(Vector2i pos, Direction dir)
+	{
+		return isPath(pos.x,pos.y,dir);
+	}
+	
 	public boolean hasEntity(int h, int w)
 	{
-		return entityMap.containsValue(new Point(h,w));
+		return entityMap.containsValue(new Vector2f(h,w));
 	}
 	
 	public Entity getEntity(Vector2f p)

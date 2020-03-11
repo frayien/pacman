@@ -8,7 +8,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Grid;
 import model.entity.PacMan;
@@ -32,7 +31,7 @@ public class PacManApplication extends Application
 		grid = new Grid();
 		gridView = new GridView(grid);
 		entityView = new EntitiesView(grid);
-		
+	
         root.getChildren().add(gridView);
         root.getChildren().add(entityView);
         

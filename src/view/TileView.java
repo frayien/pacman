@@ -7,10 +7,8 @@ import java.util.Observer;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import model.Grid;
-import model.entity.Entity;
-import model.entity.Ghost;
-import model.entity.PacMan;
 
+@SuppressWarnings("deprecation")
 public class TileView extends ImageView implements Observer
 {
 	private int width;
@@ -56,6 +54,8 @@ public class TileView extends ImageView implements Observer
 		height = h;
 		width = w;
 		this.setViewport(new Rectangle2D(0,0,32,32));
+		this.setFitHeight(GridView.TILE_SIZE);
+		this.setFitWidth(GridView.TILE_SIZE);
 	}
 
 	@Override

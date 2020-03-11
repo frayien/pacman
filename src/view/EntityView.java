@@ -11,12 +11,15 @@ import model.entity.Ghost;
 import model.entity.PacMan;
 import utils.Vector2f;
 
+@SuppressWarnings("deprecation")
 public class EntityView extends ImageView implements Observer
 {
 	public EntityView()
 	{
 		super();
 		this.setViewport(new Rectangle2D(0,0,32,32));
+		this.setFitHeight(GridView.TILE_SIZE);
+		this.setFitWidth(GridView.TILE_SIZE);
 	}
 	
 	@Override
@@ -24,8 +27,8 @@ public class EntityView extends ImageView implements Observer
 		Entity entity = (Entity) o;
 		Grid grid = (Grid) arg;
 		Vector2f p = grid.getPosition(entity);
-		this.setTranslateX(32*p.y);
-		this.setTranslateY(32*p.x);
+		this.setTranslateX(GridView.TILE_SIZE*p.y);
+		this.setTranslateY(GridView.TILE_SIZE*p.x);
 		
 		if(entity instanceof PacMan)
 		{

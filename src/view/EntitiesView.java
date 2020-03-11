@@ -18,6 +18,7 @@ public class EntitiesView extends Pane
 		initialize();
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void initialize()
 	{
         for(Entity e : grid.getEntities())

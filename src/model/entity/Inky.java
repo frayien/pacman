@@ -5,11 +5,8 @@
  */
 package model.entity;
 
-import java.awt.Point;
-
 import model.Direction;
 import model.Grid;
-import utils.Vector2f;
 import utils.Vector2i;
 
 /**
@@ -18,7 +15,7 @@ import utils.Vector2i;
  */
 public class Inky extends Ghost {
     
-	Vector2i defaultTarget = new Vector2i(19, 19);
+	Vector2i defaultTarget = new Vector2i(19, 22);
     Vector2i currentTarget;
     
     public Inky(Grid g) {

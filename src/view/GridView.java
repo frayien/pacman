@@ -8,6 +8,7 @@ import model.Grid;
 
 public class GridView extends GridPane
 {
+	public static final double TILE_SIZE = 29;
 	private Grid grid;
 	
 	private static final Image WORLDMAP = new Image("file:ressources/worldMap.png");
@@ -20,6 +21,7 @@ public class GridView extends GridPane
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void initialize()
 	{
 		for(int h = 0; h<grid.getHeight(); h++)

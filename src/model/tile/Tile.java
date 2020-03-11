@@ -10,5 +10,10 @@ public abstract class Tile
 	{
 		tileEntity = te;
 	}
+	
+	public TileEntity getTileEntity()
+	{
+		return tileEntity;
+	}
 
 }

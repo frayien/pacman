@@ -5,6 +5,7 @@ import java.util.Observable;
 import model.Direction;
 import model.Grid;
 
+@SuppressWarnings("deprecation")
 public abstract class Entity extends Observable implements Runnable
 {
 	private Thread thread;
@@ -35,8 +36,7 @@ public abstract class Entity extends Observable implements Runnable
 			frame++;
 			frame %= 2;
 			update();
-			getGrid().move(getDirection(), this);
-			try { Thread.sleep((long)(1000.0f/speed)); } catch (InterruptedException ex) { }
+			getGrid().move(getDirection(), this, (long) (1000.f/speed));
 		}
 	}
 	

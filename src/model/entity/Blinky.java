@@ -15,7 +15,7 @@ import utils.Vector2i;
  */
 public class Blinky extends Ghost {
 
-	Vector2i defaultTarget = new Vector2i(0, 19);
+	Vector2i defaultTarget = new Vector2i(0, 22);
 	Vector2i currentTarget;
 
     public Blinky(Grid g) {
