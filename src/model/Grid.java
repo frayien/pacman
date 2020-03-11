@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Observable;
-import model.entity.Blinky;
-import model.entity.Clyde;
 import java.util.Set;
 
+import javafx.application.Platform;
+import model.entity.Blinky;
+import model.entity.Clyde;
 import model.entity.Entity;
-import model.entity.Ghost;
 import model.entity.Inky;
 import model.entity.PacMan;
 import model.entity.Pinky;
@@ -125,7 +125,7 @@ public class Grid extends Observable {
 			p.x = pp.x;
 			p.y = pp.y;
 		}
-		e.refresh();
+		Platform.runLater(()->e.refresh());
 	}
 	
 	private Tile getTile(int h, int w)

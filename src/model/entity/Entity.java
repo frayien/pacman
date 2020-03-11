@@ -47,6 +47,11 @@ public abstract class Entity extends Observable implements Runnable
 		speed = s;
 	}
 	
+	public float getSpeed()
+	{
+		return speed;
+	}
+	
 	public int getFrame()
 	{
 		return frame;
@@ -63,7 +68,7 @@ public abstract class Entity extends Observable implements Runnable
 	
 	public Grid getGrid() { return grid; }
 	
-	public synchronized void refresh()
+	public void refresh()
 	{
 		setChanged();
 		notifyObservers(grid);
