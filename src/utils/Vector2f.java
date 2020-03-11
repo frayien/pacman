@@ -18,13 +18,23 @@ public class Vector2f implements Cloneable
 	
 	public float distanceTo(Vector2f other)
 	{
-		return (float) Math.sqrt((x - other.x)*(x - other.x) + (y - other.y)*(y - other.y));
+		return distanceTo(other.x, other.y);
+	}
+	
+	public float distanceTo(float x, float y)
+	{
+		return (float) Math.sqrt((x - this.x)*(x - this.x) + (y - this.y)*(y - this.y));
 	}
 	
 	public Vector2f add(Vector2f other)
 	{
-		x += other.x;
-		y += other.y;
+		return add(other.x, other.y);
+	}
+	
+	public Vector2f add(float x, float y)
+	{
+		this.x += x;
+		this.y += y;
 		return this;
 	}
 	

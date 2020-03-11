@@ -18,13 +18,22 @@ public class Vector2i implements Cloneable
 	
 	public int distanceTo(Vector2i other)
 	{
-		return Math.abs(x - other.x) + Math.abs(y - other.y);
+		return distanceTo(other.x, other.y);
+	}
+	public int distanceTo(int x, int y)
+	{
+		return Math.abs(x - this.x) + Math.abs(y - this.y);
 	}
 	
 	public Vector2i add(Vector2i other)
 	{
-		x += other.x;
-		y += other.y;
+		return add(other.x, other.y);
+	}
+	
+	public Vector2i add(int x, int y)
+	{
+		this.x += x;
+		this.y += y;
 		return this;
 	}
 	
