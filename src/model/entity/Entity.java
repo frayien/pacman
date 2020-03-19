@@ -12,9 +12,8 @@ public abstract class Entity extends Observable implements Runnable
 	private Grid grid;
 	private float speed = 1;
 	protected Direction direction = Direction.NONE;
-    protected static int frameCount;
-    protected static boolean ghostsAfraid = false;
-    protected static int ghostsAfraidFrameCount = 0;
+        protected static int frameCount;
+        protected static int ghostsAfraidFrameCount = 0;
 
 	private int frame = 0;
 	

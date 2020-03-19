@@ -62,6 +62,10 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
         	Platform.runLater(()->this.getGrid().refresh(p.toVector2i()));
         }
         Entity.frameCount = (Entity.frameCount + 1) % 40;
+        if(Entity.ghostsAfraidFrameCount > 0)
+        {
+            Entity.ghostsAfraidFrameCount = (Entity.ghostsAfraidFrameCount + 1) % 25;
+        }
     }
 
     public static void setRoot(Pane p) {

@@ -27,7 +27,7 @@ public class Inky extends Ghost {
     @Override
     public void update() {
         // TODO Auto-generated method stub
-        if(Entity.ghostsAfraid)
+        if(Entity.ghostsAfraidFrameCount == 1)
         {
             switch(this.direction)
             {
@@ -80,24 +80,32 @@ public class Inky extends Ghost {
         //If Chase
         else if (Entity.frameCount > 12) {
             Vector2i pac = this.getGrid().getPacManPosition().toVector2i();
-            Vector2i blink = this.getGrid().getPosition(Grid.blinky).toVector2i();
-            switch (this.getGrid().player.direction)
+            if(Grid.blinky != null)
             {
-                case NONE : 
-                case UP : 
-                    pac = new Vector2i(pac.x - 2,pac.y);
-                    break;
-                case DOWN : 
-                    pac = new Vector2i(pac.x + 2,pac.y);
-                    break;
-                case RIGHT : 
-                    pac = new Vector2i(pac.x,pac.y + 2);
-                    break;
-                case LEFT : 
-                    pac = new Vector2i(pac.x,pac.y - 2);
-                    break;
-            }
+                Vector2i blink = this.getGrid().getPosition(Grid.blinky).toVector2i();
+                switch (this.getGrid().player.direction)
+                {
+                    case NONE : 
+                    case UP : 
+                        pac = new Vector2i(pac.x - 2,pac.y);
+                        break;
+                    case DOWN : 
+                        pac = new Vector2i(pac.x + 2,pac.y);
+                        break;
+                    case RIGHT : 
+                        pac = new Vector2i(pac.x,pac.y + 2);
+                        break;
+                    case LEFT : 
+                        pac = new Vector2i(pac.x,pac.y - 2);
+                        break;
+                }
             currentTarget = new Vector2i(pac.x + 2*(pac.x-blink.x),pac.y + 2*(pac.y-blink.y));
+            }
+            else
+            {
+                currentTarget = pac;
+            }
+            
             this.chaseTarget(currentTarget);
         } //Else Scatter
         else {

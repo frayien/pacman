@@ -29,7 +29,7 @@ public class Pinky extends Ghost {
     public void update() {
         // TODO Auto-generated method stub
         //If ghosts are afraid, they turn back on their first move
-        if(Entity.ghostsAfraid)
+        if(Entity.ghostsAfraidFrameCount == 1)
         {
             switch(this.direction)
             {

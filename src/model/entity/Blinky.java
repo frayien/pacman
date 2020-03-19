@@ -27,7 +27,7 @@ public class Blinky extends Ghost {
     @Override
     public void update() {
         // TODO Auto-generated method stub
-        if(Entity.ghostsAfraid)
+        if(Entity.ghostsAfraidFrameCount == 1)
         {
             switch(this.direction)
             {
