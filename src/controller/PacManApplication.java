@@ -13,11 +13,13 @@ import model.Grid;
 import model.entity.PacMan;
 import view.EntitiesView;
 import view.GridView;
+import view.GumsView;
 
 public class PacManApplication extends Application
 {
 	private Grid grid;
 	private GridView gridView;
+	private GumsView gumView;
 	private EntitiesView entityView;
 	private StackPane root;
 
@@ -31,8 +33,10 @@ public class PacManApplication extends Application
 		grid = new Grid();
 		gridView = new GridView(grid);
 		entityView = new EntitiesView(grid);
+		gumView = new GumsView(grid);	
 	
         root.getChildren().add(gridView);
+        root.getChildren().add(gumView);
         root.getChildren().add(entityView);
         
         Scene scene = new Scene(root, 700, 620);

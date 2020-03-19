@@ -15,5 +15,9 @@ public abstract class Tile
 	{
 		return tileEntity;
 	}
-
+	
+	public boolean hasTileEntity()
+	{
+		return tileEntity != null;
+	}
 }

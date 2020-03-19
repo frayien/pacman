@@ -23,6 +23,7 @@ import model.tile.Path;
 import model.tile.Tile;
 import model.tile.Wall;
 import model.tileentity.PacGum;
+import model.tileentity.SuperPacGum;
 import utils.Vector2f;
 import utils.Vector2i;
 
@@ -66,6 +67,9 @@ public class Grid extends Observable {
                     }
                     if (linesplit[j].contains("g")) {
                         tileMap[i * width + j].setTileEntity(new PacGum());
+                    }
+                    if (linesplit[j].contains("s")) {
+                        tileMap[i * width + j].setTileEntity(new SuperPacGum());
                     }
                     if (linesplit[j].contains("f")) {
                         int gid = Integer.parseInt("" + linesplit[j].charAt(linesplit[j].length() - 1));
@@ -146,9 +150,14 @@ public class Grid extends Observable {
 		
 	}
 	
-	private Tile getTile(int h, int w)
+	public Tile getTile(int h, int w)
 	{
 		return tileMap[((h%height+height)%height )  *width+((w%width+width)%width)];
+	}
+	
+	public Tile getTile(Vector2i vec)
+	{
+		return getTile(vec.x,vec.y);
 	}
 	
 	public boolean isWall(int h, int w)
@@ -251,4 +260,10 @@ public class Grid extends Observable {
 	
 	public int getHeight() { return height; }
 	public int getWidth() { return width; }
+	
+	public void refresh(Vector2i p)
+	{
+		setChanged();
+		notifyObservers(p);
+	}
 }

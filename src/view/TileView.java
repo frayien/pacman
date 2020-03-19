@@ -1,12 +1,12 @@
 package view;
 
-import java.awt.Point;
 import java.util.Observable;
 import java.util.Observer;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import model.Grid;
+import utils.Vector2i;
 
 @SuppressWarnings("deprecation")
 public class TileView extends ImageView implements Observer
@@ -61,7 +61,7 @@ public class TileView extends ImageView implements Observer
 	@Override
 	public void update(Observable o, Object arg) {
 		Grid g = (Grid) o;
-		Point p = (Point) arg;
+		Vector2i p = (Vector2i) arg;
 		
 		if(p.x != height || p.y != width) return;
 		

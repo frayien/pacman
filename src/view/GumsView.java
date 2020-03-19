@@ -5,14 +5,13 @@ import javafx.scene.layout.GridPane;
 import model.Grid;
 import utils.Vector2i;
 
-public class GridView extends GridPane
+public class GumsView extends GridPane
 {
-	public static final double TILE_SIZE = 29;
-	private Grid grid;
+private Grid grid;
 	
 	private static final Image WORLDMAP = new Image("file:ressources/worldMap.png");
 	
-	public GridView(Grid g)
+	public GumsView(Grid g)
 	{
 		super();
 		grid = g;
@@ -27,12 +26,12 @@ public class GridView extends GridPane
 		{
 			for(int w = 0; w<grid.getWidth(); w++)
 			{
-				TileView tv = new TileView(h,w);
+				GumView tv = new GumView(h,w);
 				tv.setImage(WORLDMAP);
+				grid.addObserver(tv);
 				tv.update(grid, new Vector2i(h,w));
 				this.add(tv, w, h);
 			}
 		}
 	}
-
 }

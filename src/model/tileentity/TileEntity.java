@@ -1,5 +1,6 @@
 package model.tileentity;
 
-public abstract class TileEntity {
+public abstract class TileEntity 
+{
 
 }

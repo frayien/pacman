@@ -1,5 +1,6 @@
 package model.tileentity;
 
-public class PacGum extends TileEntity {
+public class PacGum extends TileEntity 
+{
 
 }
