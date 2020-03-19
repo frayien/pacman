@@ -5,8 +5,10 @@
  */
 package model.entity;
 
+import java.util.ArrayList;
 import model.Direction;
 import model.Grid;
+import utils.Vector2f;
 import utils.Vector2i;
 
 /**
@@ -25,49 +27,82 @@ public class Pinky extends Ghost {
     
     @Override
     public void update() {
-    	Vector2i p = getGrid().getPosition(this).toVector2i();
-        int distUp, distLeft, distDown, distRight;
-        //If Chase
-        if (false) {
-        } //Else Scatter
-        else {
-            
-        	Vector2i upTile,leftTile,downTile,rightTile;
+        // TODO Auto-generated method stub
+        //If ghosts are afraid, they turn back on their first move
+        if(Entity.ghostsAfraid)
+        {
+            switch(this.direction)
+            {
+                case UP :
+                    this.direction = Direction.DOWN;
+                    break;
+                case DOWN :
+                    this.direction = Direction.UP;
+                    break;
+                case RIGHT :
+                    this.direction = Direction.LEFT;
+                    break;
+                case LEFT :
+                    this.direction = Direction.RIGHT;
+                    break;
+            }
+        }
+        //Random move when afraid
+        else if(Entity.ghostsAfraidFrameCount > 0 && Entity.ghostsAfraidFrameCount < 25)
+        {
+            Vector2i p = getGrid().getPosition(this).toVector2i();
+            Vector2i upTile,leftTile,downTile,rightTile;
             upTile = new Vector2i(p.x - 1,p.y);
             leftTile = new Vector2i(p.x,p.y - 1);
             downTile = new Vector2i(p.x + 1,p.y);
             rightTile = new Vector2i(p.x,p.y + 1);
-            //UP
-            distUp = defaultTarget.distanceTo(upTile);
-            //LEFT
-            distLeft = defaultTarget.distanceTo(leftTile);
-            //DOWN
-            distDown = defaultTarget.distanceTo(downTile);
-            //RIGHT
-            distRight = defaultTarget.distanceTo(rightTile);
+            ArrayList<Direction> possibleDirections = new ArrayList<>();
+            int countDirection = 0;
+            int rand;
+            float randf;
             
-            if (getGrid().isPath(upTile.x,upTile.y)
-                    && (distUp <= distLeft || !getGrid().isPath(leftTile.x,leftTile.y) || this.direction == Direction.RIGHT)
-                    && (distUp <= distDown || !getGrid().isPath(downTile.x,downTile.y) || this.direction == Direction.UP)
-                    && (distUp <= distRight || !getGrid().isPath(rightTile.x,rightTile.y) || this.direction == Direction.LEFT)
-                    && this.direction != Direction.DOWN) {
-                this.direction = Direction.UP;
+            if(getGrid().isPath(upTile) && this.direction != Direction.DOWN) {
+                possibleDirections.add(Direction.UP);
             }
-            else if (getGrid().isPath(leftTile.x,leftTile.y)
-                    && (distLeft <= distDown || !getGrid().isPath(downTile.x,downTile.y) || this.direction == Direction.UP)
-                    && (distLeft <= distRight || !getGrid().isPath(rightTile.x,rightTile.y) || this.direction == Direction.LEFT)
-                    && this.direction != Direction.RIGHT) {
-                this.direction = Direction.LEFT;
+            if(getGrid().isPath(downTile) && this.direction != Direction.UP) {
+                possibleDirections.add(Direction.DOWN);
             }
-            else if (getGrid().isPath(downTile.x,downTile.y)
-                    && (distDown <= distRight || !getGrid().isPath(rightTile.x,rightTile.y) || this.direction == Direction.LEFT)
-                    && this.direction != Direction.UP) {
-                this.direction = Direction.DOWN;
+            if(getGrid().isPath(leftTile) && this.direction != Direction.RIGHT) {
+                possibleDirections.add(Direction.LEFT);
             }
-            else if (getGrid().isPath(rightTile.x,rightTile.y)
-                    && this.direction != Direction.LEFT) {
-                this.direction = Direction.RIGHT;
+            if(getGrid().isPath(rightTile) && this.direction != Direction.LEFT) {
+                possibleDirections.add(Direction.RIGHT);
             }
+            
+            rand = (int) (Math.random() * possibleDirections.size());
+            this.direction = possibleDirections.get(rand);
+            
+            
+        }
+        //If Chase
+        else if (Entity.frameCount > 9) {
+            //Targets 2 tiles in front of pacman
+            Vector2i pac = this.getGrid().getPacManPosition().toVector2i();
+            switch (this.getGrid().player.direction)
+            {
+                case NONE : 
+                case UP : 
+                    currentTarget = new Vector2i(pac.x - 2,pac.y);
+                    break;
+                case DOWN : 
+                    currentTarget = new Vector2i(pac.x + 2,pac.y);
+                    break;
+                case RIGHT : 
+                    currentTarget = new Vector2i(pac.x,pac.y + 2);
+                    break;
+                case LEFT : 
+                    currentTarget = new Vector2i(pac.x,pac.y - 2);
+                    break;
+            }
+            this.chaseTarget(currentTarget);
+        } //Else Scatter
+        else {
+            this.chaseTarget(defaultTarget);
         }
     }
 

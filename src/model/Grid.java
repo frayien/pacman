@@ -30,7 +30,8 @@ import utils.Vector2i;
 public class Grid extends Observable {
 
     private static final String MAP_PATH = "ressources/map.txt";
-    private static Entity player;
+    public static Entity player;
+    public static Entity blinky;
     private int width = 10;
     private int height = 10;
 
@@ -78,12 +79,14 @@ public class Grid extends Observable {
                                 entityMap.put(new Pinky(this), new Vector2f(i, j));
                                 break;
                             case 3:
+                                //Inky
                                 entityMap.put(new Inky(this), new Vector2f(i, j));
                                 break;
                             default:
                             case 0:
                                 //Blinky
-                                entityMap.put(new Blinky(this), new Vector2f(i, j));
+                                blinky = new Blinky(this);
+                                entityMap.put(blinky, new Vector2f(i, j));
                                 break;
 
                         }
