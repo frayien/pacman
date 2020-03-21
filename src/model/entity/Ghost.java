@@ -10,6 +10,7 @@ public class Ghost extends Entity {
     private int id;
     protected Vector2i defaultTarget = new Vector2i(0, 22);
     protected Vector2i currentTarget = new Vector2i(0, 0);
+    protected boolean dead = false;
 
     public Ghost(Grid g, int id) {
         super(g);
@@ -18,13 +19,15 @@ public class Ghost extends Entity {
 
     @Override
     public void update() {
-        // TODO Auto-generated method stub
-        //If Chase
-        if (false) {
-            this.chaseTarget(currentTarget);
-        } //Else Scatter
-        else {
-            this.chaseTarget(defaultTarget);
+        if(!dead)
+        {
+            //If Chase
+            if (false) {
+                this.chaseTarget(currentTarget);
+            } //Else Scatter
+            else {
+                this.chaseTarget(defaultTarget);
+            } 
         }
     }
     
@@ -78,6 +81,15 @@ public class Ghost extends Entity {
 
     public int getId() {
         return id;
+    }
+    
+    public void kill() {
+        dead = true;
+        direction = Direction.NONE;
+    }
+    
+    public boolean isDead() {
+        return dead;
     }
 
 }

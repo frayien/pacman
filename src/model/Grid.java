@@ -16,6 +16,7 @@ import javafx.application.Platform;
 import model.entity.Blinky;
 import model.entity.Clyde;
 import model.entity.Entity;
+import model.entity.Ghost;
 import model.entity.Inky;
 import model.entity.PacMan;
 import model.entity.Pinky;
@@ -120,16 +121,16 @@ public class Grid extends Observable {
 		Vector2f mov = new Vector2f(0,0);
 		switch(dir) 
 		{
-    	case UP:
-    		mov.x = -1;
-    		break;
-    	case DOWN:
-    		mov.x = 1;
-    		break;
-    	case LEFT:
-    		mov.y = -1;
-    		break;
-    	case RIGHT:
+                case UP:
+                        mov.x = -1;
+                        break;
+                case DOWN:
+                        mov.x = 1;
+                        break;
+                case LEFT:
+                        mov.y = -1;
+                        break;
+                case RIGHT:
     		mov.y = 1;
     		break;
 		default:
@@ -143,15 +144,48 @@ public class Grid extends Observable {
 		long pas = 1000/60;
 		long iter = time/pas;
 		mov.mult(1.f/(float)iter);
+                
 		for(long i = 0; i < iter; i++)
 		{
 			p.add(mov);
 			p.x = (p.x+height+0.5f)%height -0.5f;
 			p.y = (p.y+width+0.5f)%width - 0.5f;
+                        if(e instanceof PacMan)
+                        {
+                            Set<Entity> entities = this.getEntities();
+                            for(Entity entity : entities)
+                            {
+                                if (entity instanceof Ghost && !((Ghost) entity).isDead())
+                                {
+                                    Vector2i posPac = getPosition(e).toVector2i();
+                                    Vector2i posGhost = getPosition(entity).toVector2i();
+                                    if(posPac.equals(posGhost) )
+                                    {
+                                        if(Entity.ghostsAfraidFrameCount < 0)
+                                        {
+                                            System.out.println("Game Over");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if(e instanceof Ghost && !((Ghost) e).isDead())
+                        {
+                            Vector2i posPac = getPacManPosition().toVector2i();
+                            Vector2i posGhost = getPosition(e).toVector2i();
+                            if(posPac.equals(posGhost))
+                            {
+                                if(Entity.ghostsAfraidFrameCount > 0)
+                                {
+                                    ((Ghost)e).kill();
+                                    addScore(50);
+                                    return;
+                                }
+                            }
+                        }
 			Platform.runLater(()->e.refresh());
 			try { Thread.sleep(pas); } catch (InterruptedException e1) { }
 		}
-		
 	}
 	
 	public Tile getTile(int h, int w)

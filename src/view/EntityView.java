@@ -51,6 +51,11 @@ public class EntityView extends ImageView implements Observer
 		else // instanceof Ghost
 		{
 			Ghost gh = (Ghost) entity;
+                        if(gh.isDead())
+                        {
+                            this.setViewport(new Rectangle2D((gh.getFrame() + 12)*32, 2*32,32,32));
+                            return;
+                        }
                         if(Entity.ghostsAfraidFrameCount > 0 && Entity.ghostsAfraidFrameCount < 25)
                         {
                             this.setViewport(new Rectangle2D((gh.getFrame() + 12)*32, 0*32,32,32));
