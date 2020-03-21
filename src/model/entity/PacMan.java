@@ -8,6 +8,7 @@ import model.Direction;
 import model.Grid;
 import model.tileentity.SuperPacGum;
 import utils.Vector2f;
+import view.GUIView;
 
 public class PacMan extends Entity implements EventHandler<KeyEvent> {
 
@@ -23,7 +24,6 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent event) {
-
         switch (event.getCode()) {
             case UP:
                 nextDir = Direction.UP;
@@ -58,6 +58,7 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
         	{
         		Entity.ghostsAfraidFrameCount = 50; //TODO
         	}
+        	getGrid().incScore();
         	getGrid().getTile(p.toVector2i()).setTileEntity(null);
         	Platform.runLater(()->this.getGrid().refresh(p.toVector2i()));
         }

@@ -36,6 +36,7 @@ public class GumView extends ImageView implements Observer
 	@Override
 	public void update(Observable o, Object arg) {
 		Grid g = (Grid) o;
+		if(!(arg instanceof Vector2i)) return;
 		Vector2i p = (Vector2i) arg;
 		
 		if(p.x != height || p.y != width) return;
