@@ -276,31 +276,36 @@ public class Grid extends Observable {
 		setChanged();
 		notifyObservers("");
 	}
+	
+	public void asyncRefreshGUI()
+	{
+		Platform.runLater(()->refreshGUI());
+	}
 
 	public void addScore(int plus)
 	{
 		score += plus;
-		refreshGUI();
+		asyncRefreshGUI();
 	}
 	public void addLevel(int plus)
 	{
 		level += plus;
-		refreshGUI();
+		asyncRefreshGUI();
 	}
 	public void incScore() 
 	{
 		score++;
-		refreshGUI();
+		asyncRefreshGUI();
 	}
 	public void incLevel() 
 	{
 		level++;
-		refreshGUI();
+		asyncRefreshGUI();
 	}
 	public void resetScore() 
 	{
 		score = 0;
-		refreshGUI();
+		asyncRefreshGUI();
 	}
 
 	public int getScore() 
