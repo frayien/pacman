@@ -55,9 +55,7 @@ public class Inky extends Ghost {
             downTile = new Vector2i(p.x + 1,p.y);
             rightTile = new Vector2i(p.x,p.y + 1);
             ArrayList<Direction> possibleDirections = new ArrayList<>();
-            int countDirection = 0;
             int rand;
-            float randf;
             
             if(getGrid().isPath(upTile) && this.direction != Direction.DOWN) {
                 possibleDirections.add(Direction.UP);
