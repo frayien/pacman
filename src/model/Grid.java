@@ -159,11 +159,16 @@ public class Grid extends Observable {
                                 {
                                     Vector2i posPac = getPosition(e).toVector2i();
                                     Vector2i posGhost = getPosition(entity).toVector2i();
-                                    if(posPac.equals(posGhost) )
+                                    if(posPac.equals(posGhost))
                                     {
                                         if(Entity.ghostsAfraidFrameCount < 0)
                                         {
                                             System.out.println("Game Over");
+                                        }
+                                        if(Entity.ghostsAfraidFrameCount > 0)
+                                        {
+                                            ((Ghost)entity).kill();
+                                            addScore(50);
                                         }
                                     }
                                 }
@@ -175,6 +180,10 @@ public class Grid extends Observable {
                             Vector2i posGhost = getPosition(e).toVector2i();
                             if(posPac.equals(posGhost))
                             {
+                                if(Entity.ghostsAfraidFrameCount < 0)
+                                {
+                                    System.out.println("Game Over");
+                                }
                                 if(Entity.ghostsAfraidFrameCount > 0)
                                 {
                                     ((Ghost)e).kill();
