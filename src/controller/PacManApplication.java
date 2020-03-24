@@ -9,10 +9,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Grid;
 import model.entity.PacMan;
@@ -20,6 +16,7 @@ import view.EntitiesView;
 import view.GUIView;
 import view.GridView;
 import view.GumsView;
+import view.TitleView;
 
 public class PacManApplication extends Application
 {
@@ -30,6 +27,7 @@ public class PacManApplication extends Application
 	private BorderPane root;
 	private StackPane game;
 	private GUIView gui;
+	private TitleView titleView;
 
 	@Override
 	public void start(Stage stage) 
@@ -44,10 +42,12 @@ public class PacManApplication extends Application
 		gridView = new GridView(grid);
 		entityView = new EntitiesView(grid);
 		gumView = new GumsView(grid);	
+		titleView = new TitleView(grid);
 	
 		game.getChildren().add(gridView);
 		game.getChildren().add(gumView);
 		game.getChildren().add(entityView);
+		game.getChildren().add(titleView);
 		
 		gui = new GUIView(grid);
 		grid.addObserver(gui);

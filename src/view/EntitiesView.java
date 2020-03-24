@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import model.Grid;
 import model.entity.Entity;
+import utils.Vector2i;
 
 public class EntitiesView extends Pane
 {
@@ -26,6 +27,7 @@ public class EntitiesView extends Pane
         	EntityView ev = new EntityView();
         	ev.setImage(ENTITYMAP);
         	e.addObserver(ev);
+        	ev.update(e, grid);
         	getChildren().add(ev);
         }
         

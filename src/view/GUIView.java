@@ -16,17 +16,18 @@ public class GUIView extends Text implements Observer
 	
 	public GUIView(Grid grid)
 	{
-		super("niveau : 1   score : 0");
+		super("");
 		this.setFill(Color.WHITE);
 		this.setFont(Font.font("arial", FontWeight.BOLD, FontPosture.REGULAR, 20));
 		this.grid = grid;
+		update(grid,"");
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg) 
 	{
 		if(!(arg instanceof String)) return;
-		this.setText("niveau : "+grid.getLevel()+"   score : "+grid.getScore());
+		this.setText("niveau : "+grid.getLevel()+"   score : "+grid.getScore()+ "   lives : " + grid.getLives());
 	}
 	
 

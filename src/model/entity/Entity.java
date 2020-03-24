@@ -12,8 +12,10 @@ public abstract class Entity extends Observable implements Runnable
 	private Grid grid;
 	private float speed = 1;
 	protected Direction direction = Direction.NONE;
-        protected static int frameCount;
-        public static int ghostsAfraidFrameCount = 0;
+    protected static int frameCount;
+    public static int ghostsAfraidFrameCount = 0;
+    
+    private static boolean running = false;
 
 	private int frame = 0;
 	
@@ -34,6 +36,7 @@ public abstract class Entity extends Observable implements Runnable
 	{
 		while(true)
 		{
+			while(!isRunning()) { try { Thread.sleep(1); } catch (InterruptedException e) { } }
 			frame++;
 			frame %= 2;
 			update();
@@ -73,5 +76,14 @@ public abstract class Entity extends Observable implements Runnable
 	{
 		setChanged();
 		notifyObservers(grid);
+	}
+	
+	public static boolean isRunning()
+	{
+		return running;
+	}
+	public static void setRunning(boolean r)
+	{
+		running = r;
 	}
 }

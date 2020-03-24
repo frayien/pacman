@@ -27,7 +27,6 @@ import model.tileentity.PacGum;
 import model.tileentity.SuperPacGum;
 import utils.Vector2f;
 import utils.Vector2i;
-import view.GUIView;
 
 @SuppressWarnings("deprecation")
 public class Grid extends Observable {
@@ -40,6 +39,7 @@ public class Grid extends Observable {
     
     private int score = 0;
 	private int level = 1;
+	private int lives = 3;
 
     private Tile tileMap[];
     private Map<Entity, Vector2f> entityMap = new HashMap<>();
@@ -320,9 +320,24 @@ public class Grid extends Observable {
 		notifyObservers("");
 	}
 	
+	public void refreshTitle()
+	{
+		setChanged();
+		notifyObservers(new Character(' '));
+	}
+	
+	public void asyncRefresh(Vector2i p)
+	{
+		Platform.runLater(()->refresh(p));
+	}
+	
 	public void asyncRefreshGUI()
 	{
 		Platform.runLater(()->refreshGUI());
+	}
+	public void asyncRefreshTitle()
+	{
+		Platform.runLater(()->refreshTitle());
 	}
 
 	public void addScore(int plus)
@@ -345,6 +360,13 @@ public class Grid extends Observable {
 		level++;
 		asyncRefreshGUI();
 	}
+	
+	public void decLives()
+	{
+		lives--;
+		asyncRefreshGUI();
+	}
+	
 	public void resetScore() 
 	{
 		score = 0;
@@ -359,5 +381,9 @@ public class Grid extends Observable {
 	public int getLevel() 
 	{
 		return level;
+	}
+	public int getLives()
+	{
+		return lives;
 	}
 }

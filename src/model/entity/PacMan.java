@@ -37,6 +37,10 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
             case RIGHT:
                 nextDir = Direction.RIGHT;
                 break;
+            case P:
+            	setRunning(!isRunning());
+            	getGrid().asyncRefreshTitle();
+            	break;
             default:
                 break;
 
@@ -60,7 +64,7 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
         	}
         	getGrid().incScore();
         	getGrid().getTile(p.toVector2i()).setTileEntity(null);
-        	Platform.runLater(()->this.getGrid().refresh(p.toVector2i()));
+        	getGrid().asyncRefresh(p.toVector2i());
         }
         Entity.frameCount = (Entity.frameCount + 1) % 40;
         if(Entity.ghostsAfraidFrameCount > 0)
