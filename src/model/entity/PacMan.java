@@ -1,5 +1,8 @@
 package model.entity;
 
+import controller.PacManApplication;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
@@ -38,8 +41,12 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
                 nextDir = Direction.RIGHT;
                 break;
             case P:
-            	setRunning(!isRunning());
-            	getGrid().asyncRefreshTitle();
+                if(grid.getGameOver() || grid.getPlayerDead()) {
+                    
+                } else {
+                    setRunning(!isRunning());
+                    getGrid().asyncRefreshTitle();
+                }
             	break;
             default:
                 break;
@@ -49,7 +56,18 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
 
     @Override
     public void update() {
+        if(grid.getPlayerDead())
+        {
+            try {
+                this.finalize();
+            } catch (Throwable ex) {
+                Logger.getLogger(Ghost.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     	Vector2f p = getGrid().getPosition(this);
+        
+        if(p == null) return;
+        
         if (nextDir != Direction.NONE && nextDir != getDirection()) {
             if (getGrid().isPath(p.toVector2i(), nextDir)) {
                 setDirection(nextDir);
@@ -58,13 +76,13 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
         }
         if(getGrid().getTile(p.toVector2i()).hasTileEntity())
         {
-        	if(getGrid().getTile(p.toVector2i()).getTileEntity() instanceof SuperPacGum)
-        	{
-        		Entity.ghostsAfraidFrameCount = 50; //TODO
-        	}
-        	getGrid().incScore();
-        	getGrid().getTile(p.toVector2i()).setTileEntity(null);
-        	getGrid().asyncRefresh(p.toVector2i());
+                if(getGrid().getTile(p.toVector2i()).getTileEntity() instanceof SuperPacGum)
+                {
+                        Entity.ghostsAfraidFrameCount = 50; //TODO
+                }
+                getGrid().incScore();
+                getGrid().getTile(p.toVector2i()).setTileEntity(null);
+                getGrid().asyncRefresh(p.toVector2i());
         }
         Entity.frameCount = (Entity.frameCount + 1) % 40;
         if(Entity.ghostsAfraidFrameCount > 0)

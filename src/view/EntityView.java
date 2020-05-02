@@ -27,6 +27,7 @@ public class EntityView extends ImageView implements Observer
 		Entity entity = (Entity) o;
 		Grid grid = (Grid) arg;
 		Vector2f p = grid.getPosition(entity);
+                if(p == null) return;
 		this.setTranslateX(GridView.TILE_SIZE*p.y);
 		this.setTranslateY(GridView.TILE_SIZE*p.x);
 		

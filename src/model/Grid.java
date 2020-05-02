@@ -1,16 +1,20 @@
 package model;
 
+import controller.PacManApplication;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import static java.lang.Thread.sleep;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import model.entity.Blinky;
@@ -32,10 +36,13 @@ import utils.Vector2i;
 public class Grid extends Observable {
 
     private static final String MAP_PATH = "ressources/map.txt";
+    private PacManApplication app;
     public static Entity player;
     public static Entity blinky;
     private int width = 10;
     private int height = 10;
+    private boolean gameOver = false;
+    private boolean playerDead = false;
     
     private int score = 0;
 	private int level = 1;
@@ -44,10 +51,33 @@ public class Grid extends Observable {
     private Tile tileMap[];
     private Map<Entity, Vector2f> entityMap = new HashMap<>();
 
-    public Grid() {
+    public Grid(PacManApplication a) {
+        app = a;
         buildGridFromFile(MAP_PATH);
     }
+    public void gameOver()
+    {
+        app.getTitleView().setText("Game over");
+        gameOver = true;
+        Entity.setRunning(false);
 
+    }
+    
+    public void restartStage() {
+        
+        app.getTitleView().setText("You died, try again\n");
+        Entity.setRunning(false);
+        playerDead = true;
+        try {
+            sleep(50);
+            System.out.println("kill me");
+            buildGridFromFile(MAP_PATH);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Grid.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Entity.setRunning(true);
+    }
+    
     public void buildGridFromFile(String path) {
         BufferedReader br = null;
         try {
@@ -113,7 +143,7 @@ public class Grid extends Observable {
         finally { try { br.close(); } catch (IOException e) { } catch (NullPointerException e) { } }
         
         for(Entity e : entityMap.keySet()) e.start();
-	}
+    }
 	
 	public void move(Direction dir, Entity e, long time)
 	{
@@ -157,13 +187,22 @@ public class Grid extends Observable {
                             {
                                 if (entity instanceof Ghost && !((Ghost) entity).isDead())
                                 {
-                                    Vector2i posPac = getPosition(e).toVector2i();
-                                    Vector2i posGhost = getPosition(entity).toVector2i();
-                                    if(posPac.equals(posGhost))
+                                    Vector2f posPac = getPosition(e);
+                                    Vector2f posGhost = getPosition(entity);
+                                    
+                                    if(posPac != null && posGhost != null && posPac.distanceTo(posGhost) < 0.5)
                                     {
-                                        if(Entity.ghostsAfraidFrameCount < 0)
+                                        if(Entity.ghostsAfraidFrameCount <= 0)
                                         {
-                                            System.out.println("Game Over");
+                                            lives--;
+                                            if(lives <= 0)
+                                            {
+                                                gameOver();
+                                                return;
+                                            } else {
+                                                restartStage();
+                                                return;
+                                            }
                                         }
                                         if(Entity.ghostsAfraidFrameCount > 0)
                                         {
@@ -173,16 +212,24 @@ public class Grid extends Observable {
                                     }
                                 }
                             }
-                        }
+                        }/*
                         else if(e instanceof Ghost && !((Ghost) e).isDead())
                         {
-                            Vector2i posPac = getPacManPosition().toVector2i();
-                            Vector2i posGhost = getPosition(e).toVector2i();
-                            if(posPac.equals(posGhost))
+                            Vector2f posPac = getPacManPosition();
+                            Vector2f posGhost = getPosition(e);
+                            if(posPac != null && posGhost != null && posPac.distanceTo(posGhost) < 0.5)
                             {
-                                if(Entity.ghostsAfraidFrameCount < 0)
+                                if(Entity.ghostsAfraidFrameCount <= 0)
                                 {
-                                    System.out.println("Game Over");
+                                    lives--;
+                                    if(lives <= 0)
+                                    {
+                                        gameOver();
+                                        return;
+                                    } else {
+                                        restartStage();
+                                        return;
+                                    }
                                 }
                                 if(Entity.ghostsAfraidFrameCount > 0)
                                 {
@@ -191,7 +238,7 @@ public class Grid extends Observable {
                                     return;
                                 }
                             }
-                        }
+                        }*/
 			Platform.runLater(()->e.refresh());
 			try { Thread.sleep(pas); } catch (InterruptedException e1) { }
 		}
@@ -300,10 +347,10 @@ public class Grid extends Observable {
 		return entityMap.get(e);
 	}
 	
-    public Vector2f getPacManPosition() 
-    {
-        return getPosition(player);
-    }
+        public Vector2f getPacManPosition() 
+        {
+            return getPosition(player);
+        }
 	
 	public int getHeight() { return height; }
 	public int getWidth() { return width; }
@@ -386,4 +433,11 @@ public class Grid extends Observable {
 	{
 		return lives;
 	}
+        public boolean getPlayerDead() {
+            return playerDead;
+        }
+        public boolean getGameOver() {
+            return gameOver;
+        }
+    
 }

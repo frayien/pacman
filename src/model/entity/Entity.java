@@ -9,7 +9,7 @@ import model.Grid;
 public abstract class Entity extends Observable implements Runnable
 {
 	private Thread thread;
-	private Grid grid;
+	protected Grid grid;
 	private float speed = 1;
 	protected Direction direction = Direction.NONE;
     protected static int frameCount;
