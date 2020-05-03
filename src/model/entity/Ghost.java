@@ -1,13 +1,10 @@
 package model.entity;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Direction;
 import model.Grid;
-import utils.Vector2f;
 import utils.Vector2i;
 
-public class Ghost extends Entity {
+public abstract class Ghost extends Entity {
 
     private int id;
     protected Vector2i defaultTarget = new Vector2i(0, 22);
@@ -19,16 +16,8 @@ public class Ghost extends Entity {
         this.id = id;
     }
 
-    @Override
+   /* @Override
     public void update() {
-        if(grid.getPlayerDead())
-        {
-            try {
-                this.finalize();
-            } catch (Throwable ex) {
-                Logger.getLogger(Ghost.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
         if(!dead)
         {
             //If Chase
@@ -39,13 +28,11 @@ public class Ghost extends Entity {
                 this.chaseTarget(defaultTarget);
             } 
         }
-    }
+    }*/
     
     public void chaseTarget(Vector2i target)
     {
-        Vector2f f = getGrid().getPosition(this);
-        if(f == null) return;
-        Vector2i p = f.toVector2i();
+    	Vector2i p = getGrid().getPosition(this).toVector2i();
         int distUp, distLeft, distDown, distRight;
         Vector2i upTile,leftTile,downTile,rightTile;
         upTile = new Vector2i(p.x - 1,p.y);

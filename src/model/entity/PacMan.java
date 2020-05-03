@@ -1,8 +1,5 @@
 package model.entity;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -39,7 +36,7 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
                 nextDir = Direction.RIGHT;
                 break;
             case P:
-                if(grid.getGameOver() || grid.getPlayerDead()) {
+                if(getGrid().getGameOver() || getGrid().getPlayerDead()) {
                     
                 } else {
                     setRunning(!isRunning());
@@ -54,18 +51,7 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
 
     @Override
     public void update() {
-        if(grid.getPlayerDead())
-        {
-            try {
-                this.finalize();
-            } catch (Throwable ex) {
-                Logger.getLogger(Ghost.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     	Vector2f p = getGrid().getPosition(this);
-        
-        if(p == null) return;
-        
         if (nextDir != Direction.NONE && nextDir != getDirection()) {
             if (getGrid().isPath(p.toVector2i(), nextDir)) {
                 setDirection(nextDir);

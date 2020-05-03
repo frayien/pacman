@@ -35,8 +35,8 @@ import view.TitleView;
 public class Grid extends Observable {
 
     private static final String MAP_PATH = "ressources/map.txt";
-    public static Entity player;
-    public static Entity blinky;
+    public Entity player;
+    public Entity blinky;
     private int width = 10;
     private int height = 10;
     private boolean gameOver = false;

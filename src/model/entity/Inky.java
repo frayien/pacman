@@ -6,6 +6,7 @@
 package model.entity;
 
 import java.util.ArrayList;
+
 import model.Direction;
 import model.Grid;
 import utils.Vector2i;
@@ -32,18 +33,20 @@ public class Inky extends Ghost {
             {
                 switch(this.direction)
                 {
-                    case UP :
-                        this.direction = Direction.DOWN;
-                        break;
-                    case DOWN :
-                        this.direction = Direction.UP;
-                        break;
-                    case RIGHT :
-                        this.direction = Direction.LEFT;
-                        break;
-                    case LEFT :
-                        this.direction = Direction.RIGHT;
-                        break;
+                case UP :
+                    this.direction = Direction.DOWN;
+                    break;
+                case DOWN :
+                    this.direction = Direction.UP;
+                    break;
+                case RIGHT :
+                    this.direction = Direction.LEFT;
+                    break;
+                case LEFT :
+                    this.direction = Direction.RIGHT;
+                    break;
+				default:
+					break;
                 }
             }
             //Random move when afraid
@@ -79,9 +82,9 @@ public class Inky extends Ghost {
             //If Chase
             else if (Entity.frameCount > 12) {
                 Vector2i pac = this.getGrid().getPacManPosition().toVector2i();
-                if(Grid.blinky != null)
+                if(this.getGrid().blinky != null)
                 {
-                    Vector2i blink = this.getGrid().getPosition(Grid.blinky).toVector2i();
+                    Vector2i blink = this.getGrid().getPosition(this.getGrid().blinky).toVector2i();
                     switch (this.getGrid().player.direction)
                     {
                         case NONE : 
