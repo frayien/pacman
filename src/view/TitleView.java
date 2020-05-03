@@ -14,6 +14,13 @@ import model.entity.Entity;
 
 public class TitleView extends BorderPane implements Observer
 {
+	public enum Event
+	{
+		PAUSE,
+		GAMEOVER,
+		DEATH
+	}
+	
 	private Grid grid;
 	private Text text;
 	public TitleView(Grid g)
@@ -36,8 +43,21 @@ public class TitleView extends BorderPane implements Observer
 	@Override
 	public void update(Observable ob, Object arg)
 	{
-		if(!(arg instanceof Character)) return;
-		setText("Press P to resume");
+		if(!(arg instanceof Event)) return;
+		
+		switch((Event) arg)
+		{
+		case PAUSE:
+			setText("Press P to resume");
+			break;
+		case GAMEOVER:
+			setText("Game Over");
+			break;
+		case DEATH:
+			setText("You died, try again");
+			break;
+		}
+		
 		setVisible(!Entity.isRunning());
 	}
 	

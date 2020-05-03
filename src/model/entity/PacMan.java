@@ -1,9 +1,8 @@
 package model.entity;
 
-import controller.PacManApplication;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
+
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -11,7 +10,6 @@ import model.Direction;
 import model.Grid;
 import model.tileentity.SuperPacGum;
 import utils.Vector2f;
-import view.GUIView;
 
 public class PacMan extends Entity implements EventHandler<KeyEvent> {
 

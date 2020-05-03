@@ -1,20 +1,18 @@
 package model;
 
-import controller.PacManApplication;
+import static java.lang.Thread.sleep;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import static java.lang.Thread.sleep;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import model.entity.Blinky;
@@ -31,12 +29,12 @@ import model.tileentity.PacGum;
 import model.tileentity.SuperPacGum;
 import utils.Vector2f;
 import utils.Vector2i;
+import view.TitleView;
 
 @SuppressWarnings("deprecation")
 public class Grid extends Observable {
 
     private static final String MAP_PATH = "ressources/map.txt";
-    private PacManApplication app;
     public static Entity player;
     public static Entity blinky;
     private int width = 10;
@@ -50,32 +48,38 @@ public class Grid extends Observable {
 
     private Tile tileMap[];
     private Map<Entity, Vector2f> entityMap = new HashMap<>();
+    private Map<Entity, Vector2f> defaultEntityMap = new HashMap<>();
 
-    public Grid(PacManApplication a) {
-        app = a;
+    public Grid()
+    {
         buildGridFromFile(MAP_PATH);
     }
+    
     public void gameOver()
     {
-        app.getTitleView().setText("Game over");
         gameOver = true;
         Entity.setRunning(false);
+        setChanged();
+    	notifyObservers(TitleView.Event.GAMEOVER);
 
     }
     
-    public void restartStage() {
-        
-        app.getTitleView().setText("You died, try again\n");
+    public void restartStage() 
+    {
         Entity.setRunning(false);
+        setChanged();
+    	notifyObservers(TitleView.Event.DEATH);
         playerDead = true;
-        try {
-            sleep(50);
-            System.out.println("kill me");
-            buildGridFromFile(MAP_PATH);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Grid.class.getName()).log(Level.SEVERE, null, ex);
+        try { sleep(1000); } catch (InterruptedException ex) { }
+        
+        for(Entry<Entity, Vector2f> e : defaultEntityMap.entrySet())
+        {
+        	entityMap.put(e.getKey(), e.getValue().clone());
         }
-        //Entity.setRunning(true);
+        playerDead = false;
+        Entity.setRunning(true);
+        setChanged();
+    	notifyObservers(TitleView.Event.DEATH);
     }
     
     public void buildGridFromFile(String path) {
@@ -111,21 +115,28 @@ public class Grid extends Observable {
                         switch (gid) {
                             case 1:
                                 //Clyde
-                                entityMap.put(new Clyde(this), new Vector2f(i, j));
+                            	Clyde cl = new Clyde(this);
+                                entityMap.put(cl, new Vector2f(i, j));
+                                defaultEntityMap.put(cl, new Vector2f(i, j));
                                 break;
                             case 2:
                                 //Pinky
-                                entityMap.put(new Pinky(this), new Vector2f(i, j));
+                            	Pinky pi = new Pinky(this);
+                                entityMap.put(pi, new Vector2f(i, j));
+                                defaultEntityMap.put(pi, new Vector2f(i, j));
                                 break;
                             case 3:
                                 //Inky
-                                entityMap.put(new Inky(this), new Vector2f(i, j));
+                            	Inky in = new Inky(this);
+                                entityMap.put(in, new Vector2f(i, j));
+                                defaultEntityMap.put(in, new Vector2f(i, j));
                                 break;
                             default:
                             case 0:
                                 //Blinky
-                                blinky = new Blinky(this);
+                            	blinky = new Blinky(this);
                                 entityMap.put(blinky, new Vector2f(i, j));
+                                defaultEntityMap.put(blinky, new Vector2f(i, j));
                                 break;
 
                         }
@@ -134,6 +145,7 @@ public class Grid extends Observable {
                     if (linesplit[j].contains("m")) {
                         player = new PacMan(this);
                         entityMap.put(player, new Vector2f(i, j));
+                        defaultEntityMap.put(player, new Vector2f(i, j));
                     }
                 }
 
@@ -370,7 +382,7 @@ public class Grid extends Observable {
 	public void refreshTitle()
 	{
 		setChanged();
-		notifyObservers(new Character(' '));
+		notifyObservers(TitleView.Event.PAUSE);
 	}
 	
 	public void asyncRefresh(Vector2i p)

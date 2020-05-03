@@ -1,10 +1,8 @@
 package controller;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -12,11 +10,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import model.Direction;
 import model.Grid;
-import model.entity.Entity;
-import static model.entity.Entity.isRunning;
-import static model.entity.Entity.setRunning;
 import model.entity.PacMan;
 import view.EntitiesView;
 import view.GUIView;
@@ -44,7 +38,7 @@ public class PacManApplication extends Application
 
             game = new StackPane();
 
-            grid = new Grid(this);
+            grid = new Grid();
             gridView = new GridView(grid);
             entityView = new EntitiesView(grid);
             gumView = new GumsView(grid);	
