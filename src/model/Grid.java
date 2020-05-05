@@ -64,6 +64,15 @@ public class Grid extends Observable {
 
     }
     
+    public void gameOverWin()
+    {
+        gameOver = true;
+        Entity.setRunning(false);
+        setChanged();
+    	notifyObservers(TitleView.Event.WIN);
+
+    }
+    
     public void restartStage() 
     {
         Entity.setRunning(false);
@@ -161,6 +170,7 @@ public class Grid extends Observable {
 	{
 		Vector2f p = entityMap.get(e);
 		Vector2f mov = new Vector2f(0,0);
+                boolean pacGumRemaining = false;
 		switch(dir) 
 		{
                 case UP:
@@ -207,6 +217,7 @@ public class Grid extends Observable {
                                         if(Entity.ghostsAfraidFrameCount <= 0)
                                         {
                                             lives--;
+                                            asyncRefreshGUI();
                                             if(lives <= 0)
                                             {
                                                 gameOver();
@@ -224,7 +235,8 @@ public class Grid extends Observable {
                                     }
                                 }
                             }
-                        }/*
+                        }
+                        /*
                         else if(e instanceof Ghost && !((Ghost) e).isDead())
                         {
                             Vector2f posPac = getPacManPosition();
@@ -254,7 +266,25 @@ public class Grid extends Observable {
 			Platform.runLater(()->e.refresh());
 			try { Thread.sleep(pas); } catch (InterruptedException e1) { }
 		}
+                if(!pacGumRemaining())
+                {
+                    gameOverWin();
+                    return;
+                }
 	}
+        
+        public boolean pacGumRemaining() {
+            boolean pacGumRemaining = false;
+            for(int i = 0; i < width;i++)
+            {
+                for(int j = 0;j < height;j++)
+                {
+                    if(getTile(j,i).hasTileEntity()) pacGumRemaining = true;
+                        
+                }
+            }
+            return pacGumRemaining;
+        }
 	
 	public Tile getTile(int h, int w)
 	{

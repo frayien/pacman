@@ -18,6 +18,7 @@ public class TitleView extends BorderPane implements Observer
 	{
 		PAUSE,
 		GAMEOVER,
+                WIN,
 		DEATH
 	}
 	
@@ -52,6 +53,9 @@ public class TitleView extends BorderPane implements Observer
 			break;
 		case GAMEOVER:
 			setText("Game Over");
+			break;
+		case WIN:
+			setText("YOU WIN");
 			break;
 		case DEATH:
 			setText("You died, try again");
