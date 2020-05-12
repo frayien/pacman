@@ -35,8 +35,8 @@ import view.TitleView;
 public class Grid extends Observable {
 
     private static final String MAP_PATH = "ressources/map.txt";
-    public Entity player;
-    public Entity blinky;
+    public PacMan player;
+    public Blinky blinky;
     private int width = 10;
     private int height = 10;
     private boolean gameOver = false;
@@ -273,18 +273,18 @@ public class Grid extends Observable {
                 }
 	}
         
-        public boolean pacGumRemaining() {
-            boolean pacGumRemaining = false;
-            for(int i = 0; i < width;i++)
+    public boolean pacGumRemaining() {
+        boolean pacGumRemaining = false;
+        for(int i = 0; i < width;i++)
+        {
+            for(int j = 0;j < height;j++)
             {
-                for(int j = 0;j < height;j++)
-                {
-                    if(getTile(j,i).hasTileEntity()) pacGumRemaining = true;
-                        
-                }
+                if(getTile(j,i).hasTileEntity()) pacGumRemaining = true;
+                    
             }
-            return pacGumRemaining;
         }
+        return pacGumRemaining;
+    }
 	
 	public Tile getTile(int h, int w)
 	{
@@ -389,10 +389,15 @@ public class Grid extends Observable {
 		return entityMap.get(e);
 	}
 	
-        public Vector2f getPacManPosition() 
-        {
-            return getPosition(player);
-        }
+    public Vector2f getPacManPosition() 
+    {
+        return getPosition(player);
+    }
+    
+    public PacMan getPacMan()
+    {
+    	return player;
+    }
 	
 	public int getHeight() { return height; }
 	public int getWidth() { return width; }
@@ -475,11 +480,11 @@ public class Grid extends Observable {
 	{
 		return lives;
 	}
-        public boolean getPlayerDead() {
-            return playerDead;
-        }
-        public boolean getGameOver() {
-            return gameOver;
-        }
+    public boolean getPlayerDead() {
+        return playerDead;
+    }
+    public boolean getGameOver() {
+        return gameOver;
+    }
     
 }

@@ -1,54 +1,25 @@
 package model.entity;
 
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 import model.Direction;
 import model.Grid;
 import model.tileentity.SuperPacGum;
 import utils.Vector2f;
 
-public class PacMan extends Entity implements EventHandler<KeyEvent> {
+public class PacMan extends Entity {
 
     private Direction nextDir = Direction.NONE;
-
-    private static Pane root;
 
     public PacMan(Grid g) {
         super(g);
         setSpeed(4);
-        root.setOnKeyPressed(this);
     }
-
-    @Override
-    public void handle(KeyEvent event) {
-        switch (event.getCode()) {
-            case UP:
-                nextDir = Direction.UP;
-                break;
-            case DOWN:
-                nextDir = Direction.DOWN;
-                break;
-            case LEFT:
-                nextDir = Direction.LEFT;
-                break;
-            case RIGHT:
-                nextDir = Direction.RIGHT;
-                break;
-            case P:
-                if(getGrid().getGameOver() || getGrid().getPlayerDead()) {
-                    
-                } else {
-                    setRunning(!isRunning());
-                    getGrid().asyncRefreshTitle();
-                }
-            	break;
-            default:
-                break;
-
-        }
+    
+    public void setNextDir(Direction d)
+    {
+    	nextDir = d;
     }
-
+    
+    
     @Override
     public void update() {
     	Vector2f p = getGrid().getPosition(this);
@@ -75,8 +46,4 @@ public class PacMan extends Entity implements EventHandler<KeyEvent> {
         }
     }
 
-    public static void setRoot(Pane p) {
-        root = p;
-
-    }
 }

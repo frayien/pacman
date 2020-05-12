@@ -1,8 +1,10 @@
 package controller;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -10,15 +12,16 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.Direction;
 import model.Grid;
-import model.entity.PacMan;
+import model.entity.Entity;
 import view.EntitiesView;
 import view.GUIView;
 import view.GridView;
 import view.GumsView;
 import view.TitleView;
 
-public class PacManApplication extends Application
+public class PacManApplication extends Application implements EventHandler<KeyEvent>
 {
 	private static Grid grid;
 	private GridView gridView;
@@ -34,7 +37,7 @@ public class PacManApplication extends Application
 	{
             root = new BorderPane();
             root.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-            PacMan.setRoot(root);
+            root.setOnKeyPressed(this);
 
             game = new StackPane();
 
@@ -67,7 +70,39 @@ public class PacManApplication extends Application
 		launch(args);
 	}
         
-        public TitleView getTitleView() {
-            return titleView;
+    public TitleView getTitleView() 
+    {
+        return titleView;
+    }
+
+    @Override
+    public void handle(KeyEvent event) 
+    {
+        switch (event.getCode()) 
+        {
+        case UP:
+            grid.getPacMan().setNextDir(Direction.UP);
+            break;
+        case DOWN:
+        	grid.getPacMan().setNextDir(Direction.DOWN);
+            break;
+        case LEFT:
+        	grid.getPacMan().setNextDir(Direction.LEFT);
+            break;
+        case RIGHT:
+        	grid.getPacMan().setNextDir(Direction.RIGHT);
+            break;
+        case P:
+            if(grid.getGameOver() || grid.getPlayerDead()) {
+                
+            } else {
+                Entity.setRunning(!Entity.isRunning());
+                grid.asyncRefreshTitle();
+            }
+        	break;
+        default:
+            break;
+
         }
+    }
 }
